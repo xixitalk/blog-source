@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # Add changes to git.
+git add  config.toml
 git add -A content/post/*.md 
 git add -A static
 
