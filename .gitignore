@@ -1,0 +1,6 @@
+public
+._posts.md5
+fetchPost.sh
+rakeAndpush.sh
+rakeDaemon.sh
+stopflag
