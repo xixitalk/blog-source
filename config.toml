@@ -11,6 +11,7 @@ disqusShortname = "gitblog"
 
 # Number of blog posts in each pagination page
 paginate = 6
+paginatePath = "blog/page"
 
 pygmentsstyle = "solarized_dark"
 

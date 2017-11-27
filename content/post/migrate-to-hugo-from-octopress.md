@@ -11,7 +11,7 @@ tags: [tech,hugo,octopress]
 
 ## 下载hugo
 
-从<https://github.com/gohugoio/hugo/releases>下载合适的hugo版本，我下载的是ARM版本，在树莓派3上运行。
+从<https://github.com/gohugoio/hugo/releases>下载合适的hugo版本，我下载的是ARM版本，在树莓派3上运行，把`hugo`命令加到`PATH`环境变量里。
 
 ## hugo新建站
 
