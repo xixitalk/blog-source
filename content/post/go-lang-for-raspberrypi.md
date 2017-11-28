@@ -4,19 +4,18 @@ date: 2013-06-14T11:48:41+08:00
 draft: false
 tags: [golang,raspberrypi,cowproxy]
 ---
-###安装go语言
 
-选用非官方的二进制软件包，详细：<http://dave.cheney.net/unofficial-arm-tarballs>
+【golang和cow都提供ARM版本了 2017.11.28 更新，文档更新了一下】
 
-ARMv6 (Raspberry Pi, etc)  
-[go1.1.linux-arm~armv6-1.tar.gz](http://dave.cheney.net/paste/go1.1.linux-arm~armv6-1.tar.gz)  
-sha1sum 2a76c9799aa5410090234edfda36ef69f5f99a42
+### 安装go语言
+
+下载golang的ARM版本<https://golang.org/dl/>，如1.9.2版本是go1.9.2.linux-armv6l.tar.gz。
 
 <!--more-->
 
 解压到/home/pi/go目录即可
 
-###设置go语言编译环境变量
+### 设置go语言编译环境变量
 
 ```
 export GOROOT=/home/pi/go/go
@@ -30,7 +29,7 @@ export PATH=$PATH:$GOROOT/bin
 sudo apt-get install mercurial
 ```
 
-###编译cow proxy
+### 编译cow proxy
 
 [cow proxy](https://github.com/cyfdecyf/cow)是[@cyfdecyf](http://twitter.com/cyfdecyf)用go语言编写的一个自动代理，代码开源，支持二级socks代理。  
 用下面的命令编译
@@ -47,9 +46,9 @@ go build github.com/cyfdecyf/cow
 
 编译好的cow二进制文件位于/home/pi/go/mygo目录下。
 
-我已经编译好的二进制在<https://github.com/xixitalk/build/tree/master/cow>
+cow官方已经提供ARM版本了<https://github.com/cyfdecyf/cow/releases>。
 
-###下一次更新代码再编译
+### 下一次更新代码再编译
 
 ```
 go get -u  github.com/cyfdecyf/cow
