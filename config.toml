@@ -52,7 +52,7 @@ post = "/blog/:year/:month/:day/:filename/" # change the post URL to look like t
   # when adding two new lines, remember to remove the indentation otherwise the new line will be treated as a codeblock
   sidebarText = """
 
-My PGP public key <https://keybase.io/xixitalk/key.asc>
+My PGP public key: [key.asc](https://keybase.io/xixitalk/key.asc)
 
   """
   # Sidebar menu - if true will add a sidebar menu between sidebar text and recent posts
