@@ -50,22 +50,20 @@ post = "/blog/:year/:month/:day/:filename/" # change the post URL to look like t
   # Sidebar text also supports markdown
   # New lines can be added with </br> or normal markdown (two spaces at the end of line or two new lines).
   # when adding two new lines, remember to remove the indentation otherwise the new line will be treated as a codeblock
-  sidebarText = """[xixitalk@twitter](http://twitter.com/xixitalk)
+  sidebarText = """
 
-[xixitalk@github](http://github.com/xixitalk)
-
-My PGP <https://keybase.io/xixitalk/key.asc>
+My PGP public key <https://keybase.io/xixitalk/key.asc>
 
   """
   # Sidebar menu - if true will add a sidebar menu between sidebar text and recent posts
-  sidebarMenuEnabled = false
+  sidebarMenuEnabled = true
   sidebarMenuHeader = "Sidebar Links"
 
   # sidebar links
-  github = ""
+  github = "https://github.com/xixitalk/"
   bitbucket = ""
-  twitter = ""
-  keybase = ""
+  twitter = "https://twitter.com/xixitalk/"
+  keybase = "https://keybase.io/xixitalk/"
   stackoverflow = ""
   linkedin = ""
   googleplus = ""
@@ -126,10 +124,10 @@ My PGP <https://keybase.io/xixitalk/key.asc>
   """
 
   # Set to true to hide ReadingTime on posts
-  disableReadingTime = false
+  disableReadingTime = true 
 
   # Set to true to disable downloading of remote Google fonts
-  disableGoogleFonts = false
+  disableGoogleFonts = true
 
   # Generate taxonomy pages
   generateTaxonomyList = true
@@ -154,19 +152,14 @@ My PGP <https://keybase.io/xixitalk/key.asc>
 # Enable with "sidebarMenuEnabled = true" under [params]
 # Header text is "sidebarMenuHeader" under [params]
 [[menu.sidebar]]
-  Name = "Google"
-  URL = "https://www.google.com"
+  Name = "Tags"
+  URL = "/tags/"
   weight = 0
 
 [[menu.sidebar]]
-  Name = "Hugo"
-  URL = "/categories/hugo/"
-  weight = 1
-
-[[menu.sidebar]]
-  Name = "Homepage"
+  Name = "Blog"
   URL = "/"
-  weight = 2
+  weight = 1
 
 # Blackfriday is Hugo's markdown engine. Options are at: https://gohugo.io/overview/configuration/#configure-blackfriday-rendering
 [blackfriday]
