@@ -56,7 +56,7 @@ My PGP public key <https://keybase.io/xixitalk/key.asc>
 
   """
   # Sidebar menu - if true will add a sidebar menu between sidebar text and recent posts
-  sidebarMenuEnabled = true
+  sidebarMenuEnabled = false
   sidebarMenuHeader = "Sidebar Links"
 
   # sidebar links
