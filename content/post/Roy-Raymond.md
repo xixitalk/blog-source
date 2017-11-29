@@ -5,9 +5,7 @@ draft: false
 tags: [life]
 ---
 
-{% blockquote 柯冰(‏@laojiang2010) https://twitter.com/laojiang2010/status/395660825291022336 %}
-http://www.slate.com/articles/business/when_big_businesses_were_small … 维多利亚的秘密背后的悲剧：1977年，斯坦福的MBA想给太太买内衣，但是在店里觉得尴尬无比，于是就开了自己的内衣店。1982年1百万卖掉。 1993年他跳下金门大桥
-{% endblockquote %}
+{{< tweet 395660825291022336 >}}
 
 <!--more-->
 
