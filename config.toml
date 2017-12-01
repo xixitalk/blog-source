@@ -75,7 +75,7 @@ My PGP public key: [key.asc](https://keybase.io/xixitalk/key.asc)
 
   # If set to true, navigation menu links will open in a new window with the exception of links to root ("/")
   # If this item does not exist or set to false, then navigation menu links will open in the same window
-  navigationNewWindow = true
+  navigationNewWindow = false
 
   # If false, all of blog post will appear on front page (and in pagination)
   truncate = true
