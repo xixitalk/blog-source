@@ -5,5 +5,6 @@ if [ $# -lt 1 ]; then
   exit -1
 fi
 
-bash build.sh && bash deploy.sh $1 && bash push2source.sh $1
+echo "comment: $1 "
+bash build.sh && bash deploy.sh "$1" && bash push2source.sh "$1"
 

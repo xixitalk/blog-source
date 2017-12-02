@@ -10,6 +10,7 @@ msg="blog source push `date`"
 if [ $# -eq 1 ]
   then msg="$1"
 fi
+echo "push2source comment: $msg "
 git commit -m "$msg"
 
 # Push source and build repos.
