@@ -1,11 +1,11 @@
 ---
-title: "linux信号回调栈空间"
+title: "linux信号回调栈空间探究"
 date: 2017-12-20T14:13:53+08:00
 draft: false
 tags: [linux,tech]
 ---
 
-Linux上通过signal()或者sigaction()可以自定义注册一个信号的信号回调，那么信号回调是执行的栈空间在哪里呢？以下代码以内核3.4.100为例。
+Linux上通过signal()或者sigaction()可以自定义注册一个信号的信号回调，那么信号回调是执行的栈空间在哪里呢？以下代码以内核3.4.x  ARM架构为例。
 
 <!--more-->
 
@@ -18,9 +18,11 @@ Linux上通过signal()或者sigaction()可以自定义注册一个信号的信�
   
   通过`sigaltstack`可以设置信号handler独立的执行栈，如果没有设置就是在进程栈里。那应用正在执行，进程栈已经压栈了很多层次函数调用，信号handler使用进程栈的哪一部分呢。
 
-信号执行时刻：当进程因为（系统调用、中断和异常）从内核态切换到用户态时检查该进程是否有信号等待处理。
+##  基础知识
 
-![enter image description here](http://lh6.googleusercontent.com/-_HeCa43rU8o/T69fVlh4E2I/AAAAAAAAAIw/EGiHTpWzNQE/s755/signal_handle.png)
+信号执行时刻：当进程(因为系统调用、中断和异常)从内核态切换到用户态时检查该进程是否有信号等待处理，如果有则处理信号回调函数。
+
+![信号执行序列](http://lh6.googleusercontent.com/-_HeCa43rU8o/T69fVlh4E2I/AAAAAAAAAIw/EGiHTpWzNQE/s755/signal_handle.png)
 
 ![信号的捕捉](http://img.blog.csdn.net/20130519183522574)
 
@@ -64,7 +66,7 @@ Linux上通过signal()或者sigaction()可以自定义注册一个信号的信�
 
 ##  信号共享进程栈
 
-如果用户没有用`sigaltstack`设置单独的栈，那就用进程栈。同样在内核`get_sigframe`获得进程栈地址。默认sp赋予`regs->ARM_sp`，这个是进程栈中已经使用的栈顶(小地址，栈的使用从高地址到低地址减少)。**信号栈在进程栈已经使用的后面(向小地址扩展)开始,使用进程栈空闲区域**。
+如果用户没有用`sigaltstack`设置单独的栈，那就用进程栈。同样在内核`get_sigframe`获得进程栈地址。默认sp赋予`regs->ARM_sp`，这个是进程栈中已经使用的栈顶(小地址，栈的使用从高地址到低地址增长)。**信号栈在进程栈已经使用部分的后面,向小地址增长**。
 
 ```
 static inline void __user *
@@ -91,17 +93,18 @@ get_sigframe(struct k_sigaction *ka, struct pt_regs *regs, int framesize)
 进程栈和信号栈位置大概如下：
 
 ```
-|————————————————————| 低地址 栈顶
+|————————————————————| 低地址 进程栈栈顶
 |                    |
-|                    |
-|--------------------| 信号栈栈底，向低地址扩展 
-|                    |
+|--------------------|
+|      信号栈↑       |
+|--------------------| 信号栈栈底，向低地址增长↑
+|      对齐间隔       |
 |--------------------| 应用被调度切换走时栈顶(regs->ARM_sp)
 |                    |
 |                    |
 |                    |
 |                    |
-|                    |
+|   已经使用进程栈↑    |
 |                    |
 |                    |
 |                    |
