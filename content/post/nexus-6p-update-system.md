@@ -33,7 +33,7 @@ flash-all.bat
 
 ## 安装twrp recovery
 
-系统关机后按电源键+音量(-)键，进入bootloader，执行：
+从twrp下载适合nexus 6p最新版本<https://dl.twrp.me/angler/>,系统关机后按电源键+音量(-)键，进入bootloader，执行：
 
 ```
 fastboot flash recovery twrp-3.2.1-0-angler.img
@@ -49,6 +49,5 @@ Magisk 的[xda页面](https://forum.xda-developers.com/apps/magisk/official-magi
 
 1. 安装钛备份恢复数据，恢复应用和设置
 1. 恢复短信、联系人和通话记录
-
 
 
