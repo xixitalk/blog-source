@@ -11,9 +11,9 @@ tags: [tech]
 
 从死机导出来的现场看，该地址是个跳转指令，并没有发现有什么异常，很是奇怪。
 
-**在load模块前清空模块的空间的icache问题解决**。
+**在load模块前，按照模块地址空间清空icache后问题解决**。
 
-理论分析：ARM的icache和dcache是分开的，模块加载是内存填充操作，只影响力dcache，icache还是之前load执行的程序，这样与内存的程序指令不一致了。
+理论分析：ARM的icache和dcache是分开的，模块再次加载是内存填充操作，只更新了dcache，icache还是之前执行的指令，这样与内存的程序指令不一致了。
 
 linux内核的ko模块加载也有类似操作，见`kernel/module.c`里`flush_module_icache`函数。
 
