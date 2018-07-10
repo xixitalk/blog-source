@@ -5,7 +5,7 @@ draft: false
 tags: [tech]
 ---
 
-在嵌入式RTOS上，一个第三方软件自己实现了程序动态加载，问题是：程序加载后跳转执行，有时候正常，有时候导致系统死机，死机原因是未定义指令异常（ARM UND）。
+产品是嵌入式RTOS系统，一个第三方软件自己实现了程序动态加载，问题是：程序加载后跳转执行，有时候正常，有时候导致系统死机，死机原因是未定义指令异常（ARM UND）。
 
 <!--more-->
 
@@ -13,7 +13,7 @@ tags: [tech]
 
 **在load模块前，按照模块地址空间清空icache后问题解决**。
 
-理论分析：ARM的icache和dcache是分开的，模块再次加载是内存填充操作，只更新了dcache，icache还是之前执行的指令，这样与内存的程序指令不一致了。
+理论分析：ARM的icache和dcache是分开的，模块再次加载是内存填充操作，只更新了dcache，icache还是之前执行的指令，这样与内存（DDR）的程序指令不一致了。
 
 linux内核的ko模块加载也有类似操作，见`kernel/module.c`里`flush_module_icache`函数。
 

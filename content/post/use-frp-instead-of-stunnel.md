@@ -63,9 +63,9 @@ server_addr = 180.109.114.114
 server_port = 14828
 http_proxy = http://proxy.example.com.cn:80
 
-[meow_http_vistor]
+[meow_http_visitor]
 type = stcp
-role = vistor
+role = visitor
 server_name = meow_http
 sk = pass_token_123
 bind_addr = 127.0.0.1
@@ -73,6 +73,8 @@ bind_port = 8088
 use_encryption = true
 use_compression = true
 ```
+
+*注意：frp开始某些版本配置文件里visitor单词拼错成vistor了*
 
 MEOW是HTTP代理服务，浏览器设置<http://127.0.0.1:8088> 就可以使用家里的MEOW服务了。如果是FTP、SSH、HTTP服务，换成对应的端口即可。
 
