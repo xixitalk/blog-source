@@ -2,7 +2,7 @@
 title: "澳洲一处隔离野狗的栅栏显著地改变了该处的景观"
 date: 2018-07-12T20:24:01+08:00
 draft: false
-tags: [nglish]
+tags: [english]
 ---
 
 ## A fence built to keep out wild dogs has dramatically altered the Australian landscape
