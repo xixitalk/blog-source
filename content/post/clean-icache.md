@@ -17,7 +17,7 @@ tags: [tech]
 
 linux内核的ko模块加载也有类似操作，见`kernel/module.c`里`flush_module_icache`函数。
 
-```
+```c
 
 static void flush_module_icache(const struct module *mod)
 {
