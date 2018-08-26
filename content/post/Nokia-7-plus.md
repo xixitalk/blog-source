@@ -33,7 +33,7 @@ tags: [life]
 
 ### 照相效果
 
-照相效果一般，[Nokia 8的DXOMARK分数是68](https://www.dxomark.com/nokia-8-review-nokias-return-high-end-segment/)，可以类比一下,Nokia 7 plus的分数不会比它高。不要对照相有太多的期望，光线好的时候成相还不错，比较是双摄，还可以打开美颜。
+照相效果一般，[Nokia 8的DXOMARK分数是68](https://www.dxomark.com/nokia-8-review-nokias-return-high-end-segment/)，可以类比一下,Nokia 7 plus的分数不会比它高。不要对照相有太多的期望，光线好的时候成相还不错，毕竟是双摄，还可以打开美颜。
 
 ### 缺点
 
