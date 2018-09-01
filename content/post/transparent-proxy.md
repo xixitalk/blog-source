@@ -2,10 +2,10 @@
 title: "用ss-redir搭建透明代理"
 date: 2018-08-31T06:11:31+08:00
 draft: false
-tags: [tech]
+tags: [tech,shadowsocks,redsocks]
 ---
 
-原生android刷机后第一次开机系统初始设置要连接Google服务器，如果没有透明代理就很麻烦，进不了桌面。这里可以通过一台Linux机器（我用的是第一代树莓派）来达到透明代理的作用。
+原生android刷机后第一次开机系统初始设置要连接Google服务器，如果没有透明代理就很麻烦，进不了桌面。这里可以通过一台Linux机器（我用的是第一代树莓派）来达到透明代理的作用。手机、平板和机顶盒也可以通过透明代理上网，简化配置。
 
 <!--more-->
 
@@ -64,14 +64,27 @@ iptables -t nat -A SHADOWSOCKSR -d 224.0.0.0/4 -j RETURN
 iptables -t nat -A SHADOWSOCKSR -d 240.0.0.0/4 -j RETURN
 # 过滤局域网IP
 
-# iptables -t nat -A SHADOWSOCKSR -d 223.255.252.0/24 -j RETURN
 # 需要过滤的国内IP段加在这个位置，有几千条，参考下面命令获取的cn_rules.conf
+# cn_rules.conf里是iptables命令，如果不想几千条拷贝过来可以用bash执行，如下
+# sudo bash cn_rules.conf
 
 iptables -t nat -A SHADOWSOCKSR -p tcp -j REDIRECT --to-ports 1088
 # 1088 是 ss-redir 的监听端口,ss-local 和 ss-redir 的监听端口不同,配置文件不同
 
 iptables -t nat -I PREROUTING -p tcp -j SHADOWSOCKSR
 # 在 PREROUTING 链前插入 SHADOWSOCKSR 链,使其生效
+```
+
+把上面的命令保存成 iprules.sh文件，运行设置到系统里。
+
+```
+sudo bash  iprules.sh
+```
+
+如果设置错误，清理iptables设置用下面的命令：
+
+```
+sudo iptables -t nat -F
 ```
 
 ### 手机端设置
@@ -86,10 +99,10 @@ iptables -t nat -I PREROUTING -p tcp -j SHADOWSOCKSR
 curl http://ftp.apnic.net/apnic/stats/apnic/delegated-apnic-latest | grep 'apnic|CN|ipv4' | awk -F\| '{ printf("iptables -t nat -A SHADOWSOCKSR -d %s/%d -j RETURN\n", $4, 32-log($5)/log(2)) }' > cn_rules.conf
 ```
 
-我使用的ip.cn上提供的[中国大陆 IP 列表（基于全球路由优化版）](https://ip.cn/chnroutes.html)，导出来2000条。获取命令：
+我使用的ip.cn上提供的[中国大陆 IP 列表（基于全球路由优化版）](https://ip.cn/chnroutes.html)，导出来2900多条，常用的大部分大陆IP都覆盖了。获取命令：
 
 ```
-cat chnroutes.txt | grep -v "^#" | awk  '{ printf("iptables -t nat -A SHADOWSOCKSR -d %s -j RETURN\n", $1) }'  > cn_rules.conf
+curl https://raw.githubusercontent.com/ym/chnroutes2/master/chnroutes.txt | grep -v "^#" | awk  '{ printf("iptables -t nat -A SHADOWSOCKSR -d %s -j RETURN\n", $1) }'  > cn_rules.conf
 ```
 
 ### 验证国内IP过滤
@@ -98,10 +111,10 @@ cat chnroutes.txt | grep -v "^#" | awk  '{ printf("iptables -t nat -A SHADOWSOCK
 
 ### 用redsocks2替代ss-redir
 
-树莓派上本来跑了个SSR，环境太恶劣，经常需要tcping找可用的地址，重启SSR，不想再维护ss-redir了，所以切换到redsocks了，redsocks可以直接用SSR提供socks5代理。  
+树莓派上本来跑了个SSR，环境太恶劣，经常需要tcping找可用的地址，重启SSR，不想再维护ss-redir的稳定性了，所以切换到redsocks了，redsocks可以直接用SSR提供socks5代理，只维护SSR稳定可用即可。  
 没有用原版的[redsocks](https://github.com/darkk/redsocks)，使用了修改版的[redsocks2](https://github.com/semigodking/redsocks)，下载源代码编译略过。
 
-redsocks2的配置如下，如果socks5代理是本机`ip = 192.168.1.104;`行改成`ip = 0.0.0.0;`。
+redsocks2的配置config.json如下。如果socks5代理是本机，`ip = 192.168.1.104;`行改成`ip = 0.0.0.0;`。配置文件里`log_debug log_info daemon`调试的时候可以根据需要配置成on或者off，`daemon = on`是后台运行。这里redsocks监听的端口也配置成1088。
 
 ```
 base {
@@ -140,11 +153,18 @@ ipcache {
 }
 ```
 
+运行redsocks2
+
+```
+sudo ./redsocks2 -c ./config.json
+```
+
+据说redsocks稳定性可能有些问题，配置cron计划任务，每天凌晨3点重启一下好了。
+
 ### 其他说明
 
 * 不支持UDP流量转发
 * iptables规则可以sh脚本运行，或者iptables-save后用iptables-restore来加载
-* 其他特殊转发自行看iptables规则
 
 ### 参考资料
 
