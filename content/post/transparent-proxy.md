@@ -98,7 +98,7 @@ cat chnroutes.txt | grep -v "^#" | awk  '{ printf("iptables -t nat -A SHADOWSOCK
 
 ### 用redsocks2替代ss-redir
 
-树莓派上本来跑了个SSR，环境太恶劣，经常需要tcping找可用的地址，重启SSR，不想再维护ss-redir了，所有切换到redsocks了，可以直接用SSR提供socks5代理。  
+树莓派上本来跑了个SSR，环境太恶劣，经常需要tcping找可用的地址，重启SSR，不想再维护ss-redir了，所以切换到redsocks了，redsocks可以直接用SSR提供socks5代理。  
 没有用原版的[redsocks](https://github.com/darkk/redsocks)，使用了修改版的[redsocks2](https://github.com/semigodking/redsocks)，下载源代码编译略过。
 
 redsocks2的配置如下，如果socks5代理是本机`ip = 192.168.1.104;`行改成`ip = 0.0.0.0;`。
