@@ -52,6 +52,7 @@ iptables -t nat -A SHADOWSOCKSR -p tcp --dport 28888 -j RETURN
 
 iptables -t nat -A SHADOWSOCKSR -d 11.11.11.11 -j RETURN
 # 11.11.11.11 是 ss 代理服务器的 ip, 如果你只有一个 ss服务器的 ip，却能选择不同端口,就设置此条
+# 如果使用redsocks就没有ss代理服务器的ip，直接注释掉
 
 iptables -t nat -A SHADOWSOCKSR -d 0.0.0.0/8 -j RETURN
 iptables -t nat -A SHADOWSOCKSR -d 10.0.0.0/8 -j RETURN
@@ -62,6 +63,9 @@ iptables -t nat -A SHADOWSOCKSR -d 192.168.0.0/16 -j RETURN
 iptables -t nat -A SHADOWSOCKSR -d 224.0.0.0/4 -j RETURN
 iptables -t nat -A SHADOWSOCKSR -d 240.0.0.0/4 -j RETURN
 # 过滤局域网IP
+
+# iptables -t nat -A SHADOWSOCKSR -d 223.255.252.0/24 -j RETURN
+# 需要过滤的国内IP段加在这个位置，有几千条，参考下面命令获取的cn_rules.conf
 
 iptables -t nat -A SHADOWSOCKSR -p tcp -j REDIRECT --to-ports 1088
 # 1088 是 ss-redir 的监听端口,ss-local 和 ss-redir 的监听端口不同,配置文件不同
@@ -74,10 +78,71 @@ iptables -t nat -I PREROUTING -p tcp -j SHADOWSOCKSR
 
 手机端WiFi连接，**选择静态IP，网关填写树莓派的IP**。如果正常，此时手机不用配置代理即可正常访问Google服务器。
 
-### 透明代理进一步配置
+### 过滤国内IP
 
-* 过滤国内IP，和局域网IP类似，增加iptables规则即可
-* 转发UDP流量需要SSR服务端开启，否则UDP可能转发不成功
+有人提供了apnic的中国IP范围，目前有8000多条，不知道是不是树莓派性能太差了全部导入系统要好久。
+
+```
+curl http://ftp.apnic.net/apnic/stats/apnic/delegated-apnic-latest | grep 'apnic|CN|ipv4' | awk -F\| '{ printf("iptables -t nat -A SHADOWSOCKSR -d %s/%d -j RETURN\n", $4, 32-log($5)/log(2)) }' > cn_rules.conf
+```
+
+我使用的ip.cn上提供的[中国大陆 IP 列表（基于全球路由优化版）](https://ip.cn/chnroutes.html)，导出来2000条。获取命令：
+
+```
+cat chnroutes.txt | grep -v "^#" | awk  '{ printf("iptables -t nat -A SHADOWSOCKSR -d %s -j RETURN\n", $1) }'  > cn_rules.conf
+```
+
+### 验证国内IP过滤
+
+访问[ip138](http://www.ip138.com/)和[淘宝IP](http://ip.taobao.com/)，看看IP是不是国内IP，如果是国内IP就说明国内IP过滤成功了，国内IP没有走代理；相反如果是SSR服务器的IP，说明国内IP过滤配置失败了。
+
+### 用redsocks2替代ss-redir
+
+树莓派上本来跑了个SSR，环境太恶劣，经常需要tcping找可用的地址，重启SSR，不想再维护ss-redir了，所有切换到redsocks了，可以直接用SSR提供socks5代理。  
+没有用原版的[redsocks](https://github.com/darkk/redsocks)，使用了修改版的[redsocks2](https://github.com/semigodking/redsocks)，下载源代码编译略过。
+
+redsocks2的配置如下，如果socks5代理是本机`ip = 192.168.1.104;`行改成`ip = 0.0.0.0;`。
+
+```
+base {
+        log_debug = off;
+        log_info = off;
+
+        log = "file:/home/pi/redsocks/log.txt";
+
+        daemon = on;
+
+        redirector = iptables;
+}
+
+redsocks {
+        local_ip = 0.0.0.0;
+        local_port = 1088;
+
+        listenq = 128;
+
+        ip = 192.168.1.104;
+        port = 1081;
+
+        type = socks5;
+
+        autoproxy = 0;
+        timeout = 10;
+
+}
+
+ipcache {
+    cache_size = 4;
+    stale_time = 900;
+    port_check = 1;
+    cache_file = "/tmp/ipcache.txt";
+    autosave_interval = 3600;
+}
+```
+
+### 其他说明
+
+* 不支持UDP流量转发
 * iptables规则可以sh脚本运行，或者iptables-save后用iptables-restore来加载
 * 其他特殊转发自行看iptables规则
 
@@ -85,4 +150,6 @@ iptables -t nat -I PREROUTING -p tcp -j SHADOWSOCKSR
 
 1. [ss-redir 透明代理](https://gist.github.com/wen-long/8644243)
 1. [linux 用 shadowsocks + iptables + ss-redir 实现全局代理](https://blog.csdn.net/chouzhou9701/article/details/78816029)
+1. [有没有比较全的国内 IP 段表？](https://www.v2ex.com/t/351714)
+1. [Ubuntu编译运行Redsocks2实现透明代理](https://blog.csdn.net/lvshaorong/article/details/52933544)
 
