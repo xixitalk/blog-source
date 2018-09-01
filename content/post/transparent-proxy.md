@@ -11,9 +11,9 @@ tags: [tech,shadowsocks,redsocks]
 
 ### 环境要求
 
-手机和树莓派在同一个局域网，并且可以相互访问，手机WiFi连接，树莓派可以是WiFi也可以是网线连接(没有WiFi的第一代树莓派即可）。
+手机和树莓派在同一个局域网，并且可以相互访问，手机WiFi连接，树莓派可以是WiFi也可以是网线连接(没有WiFi的第一代树莓派即可）。有可用的SS/SSR或者socks5代理。
 
-### 用ss-redir搭建带ss代理的端口
+### 用ss-redir搭建带SS代理的端口
 
 如果是SS用shadowsocks-libev里的ss-redir，如果是SSR用shadowsocksr-libev里的ss-redir。注意后者多了一个`r`。我用的是SSR，在树莓派上自己编译的shadowsocksr-libev，下面以SSR为例，SS类似。
 
@@ -39,40 +39,72 @@ nohup ./ss-redir -c ss-redir.json > /dev/null 2>&1 &
 sudo sysctl -p /etc/sysctl.conf
 ```
 
-### 设置iptables转发
+### 设置iptables、ipset转发
 
-设置iptables的目的是将本机所有流量都转向ss-redir监听的端口，这个端口是带代理的，这样所有的流量都自动代理了。iptables执行要root权限，可以切换到root用户，或者用sudo方式运行。
+设置iptables的目的是将本机特定IP的流量转向ss-redir监听的端口，这个端口是带代理的，这样特定IP的流量就自动代理了。可以配置跳过无需代理的中国IP。iptables执行要root权限，可以切换到root用户，或者用sudo方式运行。
+
+先获取中国IP范围，保存文件是cn.zone。
 
 ```
-iptables -t nat -N SHADOWSOCKSR
+wget -P . http://www.ipdeny.com/ipblocks/data/countries/cn.zone
+```
+
+创建china.ipset脚本，内容如下：
+
+```
+# Destroy ipset if it already exists
+#sudo systemctl stop iptables.service
+sudo ipset destroy china
+
+# Create the ipset list
+sudo ipset -N china hash:net
+
+# remove any old list that might exist from previous runs of this script
+#rm cn.zone
+
+# Pull the latest IP set for China
+#wget -P . http://www.ipdeny.com/ipblocks/data/countries/cn.zone
+
+# Add each IP address from the downloaded list into the ipset 'china'
+for i in $(cat ./cn.zone ); do ipset -A china $i; done
+```
+
+运行脚本创建china的ipset，脚本会把cn.zone文件里的IP段都加到china的ipset里。
+
+```
+sudo bash china.ipset
+```
+
+创建iptables命令脚本
+
+```
+iptables -t nat -N REDSOCKS
 # 在 nat 表中创建新链
 
-iptables -t nat -A SHADOWSOCKSR -p tcp --dport 28888 -j RETURN
+iptables -t nat -A REDSOCKS -p tcp --dport 28888 -j RETURN
 # 28888 是 ss 代理服务器的端口，即远程 shadowsocks 服务器提供服务的端口，如果你有多个 ip 可用,但端口一致，就设置这个
 
-iptables -t nat -A SHADOWSOCKSR -d 11.11.11.11 -j RETURN
+iptables -t nat -A REDSOCKS -d 11.11.11.11 -j RETURN
 # 11.11.11.11 是 ss 代理服务器的 ip, 如果你只有一个 ss服务器的 ip，却能选择不同端口,就设置此条
-# 如果使用redsocks就没有ss代理服务器的ip，直接注释掉
 
-iptables -t nat -A SHADOWSOCKSR -d 0.0.0.0/8 -j RETURN
-iptables -t nat -A SHADOWSOCKSR -d 10.0.0.0/8 -j RETURN
-iptables -t nat -A SHADOWSOCKSR -d 127.0.0.0/8 -j RETURN
-iptables -t nat -A SHADOWSOCKSR -d 169.254.0.0/16 -j RETURN
-iptables -t nat -A SHADOWSOCKSR -d 172.16.0.0/12 -j RETURN
-iptables -t nat -A SHADOWSOCKSR -d 192.168.0.0/16 -j RETURN
-iptables -t nat -A SHADOWSOCKSR -d 224.0.0.0/4 -j RETURN
-iptables -t nat -A SHADOWSOCKSR -d 240.0.0.0/4 -j RETURN
+iptables -t nat -A REDSOCKS -d 0.0.0.0/8 -j RETURN
+iptables -t nat -A REDSOCKS -d 10.0.0.0/8 -j RETURN
+iptables -t nat -A REDSOCKS -d 127.0.0.0/8 -j RETURN
+iptables -t nat -A REDSOCKS -d 169.254.0.0/16 -j RETURN
+iptables -t nat -A REDSOCKS -d 172.16.0.0/12 -j RETURN
+iptables -t nat -A REDSOCKS -d 192.168.0.0/16 -j RETURN
+iptables -t nat -A REDSOCKS -d 224.0.0.0/4 -j RETURN
+iptables -t nat -A REDSOCKS -d 240.0.0.0/4 -j RETURN
 # 过滤局域网IP
 
-# 需要过滤的国内IP段加在这个位置，有几千条，参考下面命令获取的cn_rules.conf
-# cn_rules.conf里是iptables命令，如果不想几千条拷贝过来可以用bash执行，如下
-# sudo bash cn_rules.conf
+iptables -t nat -A REDSOCKS -p tcp -m set --match-set china dst -j RETURN
+# 过滤国内IP段,IP保存在china ipset里
 
-iptables -t nat -A SHADOWSOCKSR -p tcp -j REDIRECT --to-ports 1088
+iptables -t nat -A REDSOCKS -p tcp -j REDIRECT --to-ports 1088
 # 1088 是 ss-redir 的监听端口,ss-local 和 ss-redir 的监听端口不同,配置文件不同
 
-iptables -t nat -I PREROUTING -p tcp -j SHADOWSOCKSR
-# 在 PREROUTING 链前插入 SHADOWSOCKSR 链,使其生效
+iptables -t nat -I PREROUTING -p tcp -j REDSOCKS
+# 在 PREROUTING 链前插入 REDSOCKS 链,使其生效
 ```
 
 把上面的命令保存成 iprules.sh文件，运行设置到系统里。
@@ -90,20 +122,6 @@ sudo iptables -t nat -F
 ### 手机端设置
 
 手机端WiFi连接，**选择静态IP，网关填写树莓派的IP**。如果正常，此时手机不用配置代理即可正常访问Google服务器。
-
-### 过滤国内IP
-
-有人提供了apnic的中国IP范围，目前有8000多条，不知道是不是树莓派性能太差了全部导入系统要好久。
-
-```
-curl http://ftp.apnic.net/apnic/stats/apnic/delegated-apnic-latest | grep 'apnic|CN|ipv4' | awk -F\| '{ printf("iptables -t nat -A SHADOWSOCKSR -d %s/%d -j RETURN\n", $4, 32-log($5)/log(2)) }' > cn_rules.conf
-```
-
-我使用的ip.cn上提供的[中国大陆 IP 列表（基于全球路由优化版）](https://ip.cn/chnroutes.html)，导出来2900多条，常用的大部分大陆IP都覆盖了。获取命令：
-
-```
-curl https://raw.githubusercontent.com/ym/chnroutes2/master/chnroutes.txt | grep -v "^#" | awk  '{ printf("iptables -t nat -A SHADOWSOCKSR -d %s -j RETURN\n", $1) }'  > cn_rules.conf
-```
 
 ### 验证国内IP过滤
 
@@ -170,6 +188,6 @@ sudo ./redsocks2 -c ./config.json
 
 1. [ss-redir 透明代理](https://gist.github.com/wen-long/8644243)
 1. [linux 用 shadowsocks + iptables + ss-redir 实现全局代理](https://blog.csdn.net/chouzhou9701/article/details/78816029)
-1. [有没有比较全的国内 IP 段表？](https://www.v2ex.com/t/351714)
 1. [Ubuntu编译运行Redsocks2实现透明代理](https://blog.csdn.net/lvshaorong/article/details/52933544)
+1. [使用 iptables、ipset 的全局智能代理](https://blog.chih.me/global-proxy-within-ipset-and-iptables.html)
 
