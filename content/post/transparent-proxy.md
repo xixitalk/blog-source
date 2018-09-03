@@ -1,11 +1,11 @@
 ---
-title: "用ss-redir搭建透明代理"
+title: "用ss-redir或redsocks搭建透明网关"
 date: 2018-08-31T06:11:31+08:00
 draft: false
 tags: [tech,shadowsocks,redsocks]
 ---
 
-原生android刷机后第一次开机系统初始设置要连接Google服务器，如果没有透明代理就很麻烦，进不了桌面。这里可以通过一台Linux机器（我用的是第一代树莓派）来达到透明代理的作用。手机、平板和机顶盒也可以通过透明代理上网，简化配置。
+原生android刷机后第一次开机系统初始设置要连接Google服务器，如果没有透明代理就很麻烦，进不了桌面。这里可以通过一台Linux机器（我用的是第一代树莓派）来达到透明代理的作用。平常情况下手机、平板和机顶盒也可以通过透明代理上网，简化配置。
 
 <!--more-->
 
@@ -181,7 +181,7 @@ sudo ./redsocks2 -c ./config.json
 
 ### 其他说明
 
-* 不支持UDP流量转发
+* 不支持UDP流量转发，DNS污染用其他方法解决。我用的dnsmasq + overture。dnsmasq做缓存，overture做域名翻墙和国内IP分流。
 * iptables规则可以sh脚本运行，或者iptables-save后用iptables-restore来加载
 
 ### 参考资料
