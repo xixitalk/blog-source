@@ -179,9 +179,30 @@ sudo ./redsocks2 -c ./config.json
 
 据说redsocks稳定性可能有些问题，配置cron计划任务，每天凌晨3点重启一下好了。
 
+### ipset设置速度优化
+
+用`sudo bash china.ipset`设置ipset后，可以把ipset设置save起来，后面再restore速度就快很多。
+
+```
+sudo ipset save > ipset.save.txt
+```
+
+把下面脚本保存为 ipset.restore.sh，每次开机设置一次。`sudo iptables -t nat -F`三条的含义是清空iptables nat配置，不然多次执行ipset会提示正在使用，禁止destroy。建议：每次应该都是先设置ipset，再设置iptables。
+
+```
+#!/bin/bash
+
+sudo iptables -t nat -F
+sudo iptables -t nat -X
+sudo iptables -t nat -Z
+
+sudo ipset destroy china
+sudo ipset restore < ipset.save.txt
+```
+
 ### 其他说明
 
-* 不支持UDP流量转发，DNS污染用其他方法解决。我用的dnsmasq + overture。dnsmasq做缓存，overture做域名翻墙和国内IP分流。
+* 不支持UDP流量转发，DNS污染用其他方法解决。我用的dnsmasq + overture。dnsmasq做缓存，overture做域名翻墙和国内IP分流。overture国内使用dnspod的DNS服务，国外使用8.8.8.8，这两个DNS服务都支持EDNS。
 * iptables规则可以sh脚本运行，或者iptables-save后用iptables-restore来加载
 
 ### 参考资料
