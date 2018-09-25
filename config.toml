@@ -52,7 +52,7 @@ post = "/blog/:year/:month/:day/:filename/" # change the post URL to look like t
   # when adding two new lines, remember to remove the indentation otherwise the new line will be treated as a codeblock
   sidebarText = """
 
-My PGP public key: [key.asc](https://keybase.io/xixitalk/key.asc)
+email: xixitalk at yandex.com
 
   """
   # Sidebar menu - if true will add a sidebar menu between sidebar text and recent posts
@@ -63,7 +63,7 @@ My PGP public key: [key.asc](https://keybase.io/xixitalk/key.asc)
   github = "https://github.com/xixitalk/"
   bitbucket = ""
   twitter = "https://twitter.com/xixitalk/"
-  keybase = "https://keybase.io/xixitalk/"
+  keybase = ""
   stackoverflow = ""
   linkedin = ""
   googleplus = ""
