@@ -44,6 +44,18 @@ tags: [life]
 方法是：下载B2N-3150-0-00WW-B04-update.zip，重命名成 B2N-3150-0-00CN-B04-update.zip放到内置存储根目录，拨号`*#*#874#*#*`按照提示升级即可。目前看起来一切正常，这个是最后一个beta版本，bug应该很少了，可以做主力使用。  
 **建议：升级前备份数据，退出google账号，恢复系统到出厂状态，然后再拨号升级**。
 
+### 再后续：刷android Pie 正式版
+
+HMD发布了Nokia 7 Plus的android Pie正式版，[新闻在此](https://www.nokiacamp.com/stable-android-pie-update-for-nokia-7-plus-is-now-available/)。
+
+可以下载软件包，手动刷机。软件包[下载地址在此](https://redirector.gvt1.com/packages/data/ota-api/nokia_b2nsprout_onyx00ww/105d70f18f853101a4e4d47f66b60a97318bc589.zip)。
+
+方法：进 recovery 通过在电脑上adb sideload 刷机。   
+注意：最好备份数据、登出 Google 账号和清空数据再刷机。
+
+作为主力机使用了半个月，体验一切正常。
+
+
 ### 参考文档
 
 [Nokia 7 的原味 Android 使用体验](https://steemit.com/cn/@momok/nokia-7-android)
