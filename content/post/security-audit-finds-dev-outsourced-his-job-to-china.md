@@ -7,10 +7,10 @@ tags: [funny]
 
 来源：<http://www.theregister.co.uk/2013/01/16/developer_oursources_job_china/>
 
-##Security audit finds dev OUTSOURCED his JOB to China 
-##公司安全人员审计发现程序员外包自己工作给中国人
-###Cunning scheme netted him 'best in company' awards
-###狡猾的伎俩竟然让他获得了“最佳员工”称号
+## Security audit finds dev OUTSOURCED his JOB to China 
+## 公司安全人员审计发现程序员外包自己工作给中国人
+### Cunning scheme netted him 'best in company' awards
+### 狡猾的伎俩竟然让他获得了“最佳员工”称号
 
 By Iain Thomson in San Francisco  
 由Iain Thomson从洛杉矶供稿  

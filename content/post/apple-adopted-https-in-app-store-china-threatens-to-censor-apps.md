@@ -7,8 +7,8 @@ tags: [apple,censor]
 
 来源:<https://en.greatfire.org/blog/2012/dec/apple-adopted-https-app-store-china-threatens-censor-apps>
 
-##Apple adopted https in App Store. China threatens to censor apps.
-##苹果应用商店启用https，中国要对应用进行审查
+## Apple adopted https in App Store. China threatens to censor apps.
+## 苹果应用商店启用https，中国要对应用进行审查
 Submitted by percy on Thu, Dec 20, 2012
 由percy于2012.12.20 星期四提交
 
