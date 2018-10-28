@@ -52,6 +52,7 @@ post = "/blog/:year/:month/:day/:filename/" # change the post URL to look like t
   # when adding two new lines, remember to remove the indentation otherwise the new line will be treated as a codeblock
   sidebarText = """
 
+If you have any comments, let me know.
 email: xixitalk at yandex.com
 
   """
