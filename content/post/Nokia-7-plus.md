@@ -55,6 +55,11 @@ HMD发布了Nokia 7 Plus的android Pie正式版，[新闻在此](https://www.nok
 
 作为主力机使用了半个月，体验一切正常。
 
+### 手动更新android Pie十月份安全补丁
+
+手动更新来自[xda](https://forum.xda-developers.com/nokia-7-plus/development/ota-nokia-7-plus-ota-links-t3818774)。
+
+先下载[WW 3.22C_SP01 October 2018 (B2N-322D-0-00WW-B01-update.zip)](https://android.googleapis.com/packages/ota-api/nokia_b2nsprout_onyx00ww/d734e46db890dc1ca67009c7341f0c2b5da22e87.zip)，下载文件重命名**B2N-322D-0-00WW-B01-update.zip**，放在手机内存存储空间根目录。手机拨号 `*#*#874#*#*`会提示系统更新，按照提示操作即可。升级完重启系统，从设置里查看*关于手机*，手机版本号变成**00WW_3_22C_SP01**，从*系统更新*里可以看到安全补丁程序级别是2018年10月1日。
 
 ### 参考文档
 
