@@ -63,6 +63,6 @@ HMD发布了Nokia 7 Plus的android Pie正式版，[新闻在此](https://www.nok
 
 ### 参考文档
 
-[Nokia 7 的原味 Android 使用体验](https://steemit.com/cn/@momok/nokia-7-android)
-[hmd公布Nokia 7 plus Android P DP5 (nokia称DP4)](https://www.dospy.wang/archiver/?tid-477.html)
+1. [Nokia 7 的原味 Android 使用体验](https://steemit.com/cn/@momok/nokia-7-android)
+2. [hmd公布Nokia 7 plus Android P DP5 (nokia称DP4)](https://www.dospy.wang/archiver/?tid-477.html)
 
