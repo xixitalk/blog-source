@@ -58,9 +58,17 @@ HMD发布了Nokia 7 Plus的android Pie正式国际版，可以下载软件包，
 
 更新包来自[xda](https://forum.xda-developers.com/nokia-7-plus/development/ota-nokia-7-plus-ota-links-t3818774)。
 
-升级包[下载页面](https://androidfilehost.com/?fid=11410963190603861728)，下载文件名为**B2N-339B-0-00WW-B03-322D-0-00WW-B01-update.zip**，放在手机内存存储空间根目录。手机拨号 `*#*#874#*#*`会提示系统更新，按照提示操作即可。升级完重启系统，从设置里查看**关于手机**，手机版本号变成**00WW_3_39B**，从**系统更新**里可以看到安全补丁程序级别是2018年11月1日。
+[升级包下载](https://android.googleapis.com/packages/ota-api/nokia_b2nsprout_onyx00ww/72426218bf9f8a4a5da6798ae7341e45a3c00540.zip)，下载文件重命名为**B2N-339B-0-00WW-B03-322D-0-00WW-B01-update.zip**，放在手机内存存储空间根目录。手机拨号 `*#*#874#*#*`会提示系统更新，按照提示操作即可。升级完重启系统，从设置里查看**关于手机**，手机版本号变成**00WW_3_39B**，从**系统更新**里可以看到安全补丁程序级别是2018年11月1日。
 
 更新完2018.11月份安全补丁后，发现可以用中国电信的VoLTE了。
+
+### (2018.12.10)手动更新android Pie 2018.12月份安全补丁
+
+更新包来自[xda](https://forum.xda-developers.com/nokia-7-plus/development/ota-nokia-7-plus-ota-links-t3818774)。
+
+[升级包下载](https://android.googleapis.com/packages/ota-api/nokia_b2nsprout_onyx00ww/0f62e4e3a82403e1cc58cce9dad8e5dd1a75994e.zip)，下载文件名改为**B2N-339D-0-00WW-B03-339B-0-00WW-B01-update.zip**。不知道为什么这个版本无法用拨号874方式升级，我用的是进recovery模式，adb sideload方式升级的。
+
+升级完重启系统，从设置里查看**关于手机**，手机版本号变成**00WW_3_39B_SP01**，从**系统更新**里可以看到安全补丁程序级别是2018年12月1日。
 
 ### 参考文档
 
