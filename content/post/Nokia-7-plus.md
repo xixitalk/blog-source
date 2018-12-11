@@ -62,6 +62,12 @@ HMD发布了Nokia 7 Plus的android Pie正式国际版，可以下载软件包，
 
 更新完2018.11月份安全补丁后，发现可以用中国电信的VoLTE了。
 
+### android Pie 完整版本(3_39B)
+
+android Pie完整版本，刷完这个版本直接是android Pie 11月份安全补丁版本，版本号是3_39B，这不是OTA版本，是完整版本，建议还是android Oreo的机器直接刷这个版本。[下载包地址](https://android.googleapis.com/packages/ota-api/nokia_b2nsprout_onyx00ww/8e46fce41f211c1b68e14c7873e9b575a0ea596b.zip),下载完改名为B2N-339B-0-00WW-B03-222R-0-00WW-B01-update.zip。
+
+建议：清空用户数据、登出Google帐号，恢复出厂再通过adb sideload刷机。要解决翻墙问题，不然刷完机系统开机无法激活系统。**【提示】**这个版本我没有刷过。
+
 ### (2018.12.10)手动更新android Pie 2018.12月份安全补丁
 
 更新包来自[xda](https://forum.xda-developers.com/nokia-7-plus/development/ota-nokia-7-plus-ota-links-t3818774)。
