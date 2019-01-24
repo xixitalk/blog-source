@@ -76,8 +76,17 @@ android Pie完整版本，刷完这个版本直接是android Pie 11月份安全�
 
 升级完重启系统，从设置里查看**关于手机**，手机版本号变成**00WW_3_39B_SP01**，从**系统更新**里可以看到安全补丁程序级别是2018年12月1日。
 
+### (2019.1.24)手动更新android Pie 2019.1月份安全补丁
+
+更新包来自[xda](https://forum.xda-developers.com/nokia-7-plus/development/ota-nokia-7-plus-ota-links-t3818774)。
+
+[升级包下载](https://android.googleapis.com/packages/ota-api/nokia_b2nsprout_onyx00ww/93147f19920a9992b6b10fb17bc0240377e8a818.zip)，下载文件名改为**B2N-339F-0-00WW-B01-339D-0-00WW-B01-update.zip**。进recovery模式，adb sideload方式升级。
+
+升级完重启系统，从设置里查看**关于手机**，手机版本号变成**00WW_3_39B_SP02**，从**系统更新**里可以看到安全补丁程序级别是2019年1月1日。
+
 ### 参考文档
 
 1. [Nokia 7 的原味 Android 使用体验](https://steemit.com/cn/@momok/nokia-7-android)
 1. [xda:Nokia 7 Plus OTA & Firmware Collection](https://forum.xda-developers.com/nokia-7-plus/development/ota-nokia-7-plus-ota-links-t3818774)
+1. [Nokia 7 plus 刷国际版系统体验](https://www.v2ex.com/t/463712)
 
